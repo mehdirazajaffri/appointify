@@ -138,7 +138,26 @@ Note: With Docker, you can access the admin panel at http://localhost/admin/
     npm run build
 ```
 
-- Frontend is available at http://localhost:3000/
+- Frontend will be available at http://localhost:3000/
+
+
+### Approach to the project
+<small>
+To memorize the requirements effectively, I wrote them down on paper. Then, I designed the database and created API models. I also created a normalized version of the database. Despite the tight deadline, I completed all API and admin panel functionalities in 5-6 hours, starting at 7 A.M. I tested and fixed bugs, and added validations like preventing appointments for past dates. Deploying the API on AWS Elastic Beanstalk took longer, so I opted for a free option on pythonanywhere.com, which will keep my Django site active for three months
+</small>
+
+### Estimated Time to Complete
+<small>
+Today was my first day on this project because yesterday was insane at work. I didn't have a moment to breathe! But today, I was all in. I put in a solid 10 hours, no breaks, not even for water. I was totally focused
+</small>
+
+### Pending Items
+<small>
+<li>Front-end is pretty basic, I will work on it later.</li>
+<li>I will address the front-end routing issues and switch to using react-router-dom v6.</li>
+<li>I haven't written any tests yet. I made a start on the backend, but my main focus was completing the task.</li>
+<li>I still need to catch up on the Doctor Status Update call.</li>
+</small>
 
 ## Contact
 
