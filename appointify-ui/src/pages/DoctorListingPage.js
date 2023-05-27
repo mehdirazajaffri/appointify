@@ -6,6 +6,8 @@ import '../css/DoctorListingPage.css'; // Import the custom CSS file
 const DoctorListingPage = () => {
   const [doctors, setDoctors] = useState([]);
   const history = useHistory();
+  const storedUser = localStorage.getItem('user');
+  const userData = storedUser ? JSON.parse(storedUser) : null;
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -24,8 +26,24 @@ const DoctorListingPage = () => {
     history.push(`/book-appointment/${doctorId}`);
   };
 
+  const handleLogout = () => {
+    // Remove user data from localStorage
+    localStorage.removeItem('user');
+    // Redirect to the Sign In page
+    history.push('/signin');
+  };
+
   return (
     <div className="doctor-listing-container">
+       {userData && (
+        <div className="user-data">
+          <p>Welcome, {userData.first_name} {userData.last_name}</p>
+          <p>Email: {userData.email}</p>
+          <button className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+      )}
       <h1>Doctor Listing Page</h1>
       {doctors.map((doctor) => (
         <div key={doctor.id} className="doctor-card">
