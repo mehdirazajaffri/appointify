@@ -1,0 +1,62 @@
+from datetime import datetime
+
+from rest_framework import serializers
+
+from appointment.models import Doctor, AppointifyUser, Patient, Appointment
+
+
+class AppointifyUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AppointifyUser
+        fields = ('username', 'email', 'phone_number', 'first_name', 'last_name',)
+        write_only_fields = ('password',)
+
+
+class DoctorSerializer(serializers.ModelSerializer):
+    user = AppointifyUserSerializer(read_only=True)
+
+    class Meta:
+        model = Doctor
+        fields = ('user', 'specialization', 'about', 'time_slots', 'image', 'degree', 'experience',)
+
+
+class PatientSerializer(serializers.ModelSerializer):
+    user = AppointifyUserSerializer()
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = AppointifyUser.objects.create_user(**user_data)
+        patient = Patient.objects.create(user=user, **validated_data)
+        return patient
+
+    class Meta:
+        model = Patient
+        fields = ('user', 'gender')
+
+
+class AppointmentSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        date = validated_data['date']
+        patient = validated_data.get('patient', None)
+        doctor = validated_data['doctor']
+        time_slot = validated_data['time_slot']
+
+        if date < datetime.now().date():
+            raise serializers.ValidationError('Date cannot be in the past')
+
+        if patient and patient.appointments.filter(date=date, doctor=doctor).exists():
+            raise serializers.ValidationError('You already have an appointment with this doctor on this date')
+
+        if doctor.time_slots.filter(slot=time_slot).exists():
+            if doctor.appointments.filter(date=date, time_slot=time_slot).exists():
+                raise serializers.ValidationError('This time slot is not available')
+        else:
+            raise serializers.ValidationError('This time slot is not available')
+
+        appointment = Appointment.objects.create(**validated_data)
+        return appointment
+
+    class Meta:
+        model = Appointment
+        fields = "__all__"

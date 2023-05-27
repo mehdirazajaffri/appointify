@@ -1,0 +1,599 @@
+openapi: 3.0.3
+info:
+  title: Appointify API
+  version: 1.0.0
+  description: Appointify API to manage appointments
+  contact:
+    name: Appointify
+    url: https://appointify.com
+    email: meddiriz@gmail.com
+paths:
+  /api/auth-token/:
+    post:
+      operationId: api_auth_token_create
+      summary: Get Auth Token
+      tags:
+      - Auth Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user_id:
+                    type: integer
+                  created:
+                    type: string
+                    format: date-time
+                  email:
+                    type: string
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  last_login:
+                    type: string
+                    format: date-time
+          description: ''
+  /api/doctors/:
+    get:
+      operationId: api_doctors_list
+      parameters:
+      - in: query
+        name: experience
+        schema:
+          type: integer
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: specialization
+        schema:
+          type: string
+      tags:
+      - Doctors
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDoctorList'
+          description: ''
+  /api/doctors/{id}/:
+    get:
+      operationId: api_doctors_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Doctor.
+        required: true
+      tags:
+      - Doctors
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+          description: ''
+  /api/doctors/{id}/list_available_appointments/:
+    get:
+      operationId: list_available_appointments
+      description: List all available appointments for a specific doctor on a specific
+        date.
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+        description: The specific date for which to list available appointments.
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Doctor.
+        required: true
+      tags:
+      - Doctors
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    doctor_id:
+                      type: integer
+                    doctor_name:
+                      type: string
+                    time_slot:
+                      type: string
+                    date:
+                      type: string
+                      format: date
+          description: ''
+  /api/doctors/{id}/update_appointment_status/:
+    post:
+      operationId: update_appointment_status
+      description: Update the status of an appointment for a specific doctor.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Doctor.
+        required: true
+      tags:
+      - Doctors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Doctor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Doctor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Doctor'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+          description: ''
+  /api/patients/:
+    get:
+      operationId: api_patients_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Patient
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPatientList'
+          description: ''
+  /api/patients/{id}/:
+    get:
+      operationId: api_patients_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Patient.
+        required: true
+      tags:
+      - Patient
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: ''
+  /api/patients/appointments/:
+    get:
+      operationId: api_patients_appointments_list
+      summary: Get Appointments
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Patient
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAppointmentList'
+          description: ''
+  /api/patients/book_appointment/:
+    post:
+      operationId: api_patients_book_appointment_create
+      summary: Book Appointment
+      tags:
+      - Patient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Appointment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Appointment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Appointment'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: ''
+  /api/patients/register_patient/:
+    post:
+      operationId: api_patients_register_patient_create
+      summary: Register Patient
+      tags:
+      - Patient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Patient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Patient'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: ''
+components:
+  schemas:
+    AppointifyUser:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 20
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - email
+      - username
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        date:
+          type: string
+          format: date
+        email:
+          type: string
+          format: email
+          nullable: true
+          maxLength: 255
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 20
+        message:
+          type: string
+          nullable: true
+        patient:
+          type: integer
+          nullable: true
+        doctor:
+          type: integer
+        time_slot:
+          $ref: '#/components/schemas/TimeSlotEnum'
+      required:
+      - created_at
+      - date
+      - doctor
+      - id
+      - time_slot
+      - updated_at
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+      - password
+      - token
+      - username
+    Doctor:
+      type: object
+      properties:
+        user:
+          allOf:
+          - $ref: '#/components/schemas/AppointifyUser'
+          readOnly: true
+        specialization:
+          type: string
+          maxLength: 255
+        about:
+          type: string
+          nullable: true
+        time_slots:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeSlotsEnum'
+        image:
+          type: string
+          format: uri
+        degree:
+          type: string
+          maxLength: 255
+        experience:
+          type: integer
+      required:
+      - degree
+      - specialization
+      - user
+    GenderEnum:
+      enum:
+      - male
+      - female
+      - other
+      type: string
+      description: |-
+        * `male` - Male
+        * `female` - Female
+        * `other` - Other
+    PaginatedAppointmentList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Appointment'
+    PaginatedDoctorList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Doctor'
+    PaginatedPatientList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Patient'
+    Patient:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/AppointifyUser'
+        gender:
+          $ref: '#/components/schemas/GenderEnum'
+      required:
+      - gender
+      - user
+    StatusEnum:
+      enum:
+      - pending
+      - approved
+      - rejected
+      - cancelled
+      - completed
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `approved` - Approved
+        * `rejected` - Rejected
+        * `cancelled` - Cancelled
+        * `completed` - Completed
+    TimeSlotEnum:
+      enum:
+      - 9AM-10AM
+      - 10AM-11AM
+      - 11AM-12PM
+      - 12PM-1PM
+      - 1PM-2PM
+      - 2PM-3PM
+      - 3PM-4PM
+      - 4PM-5PM
+      - 5PM-6PM
+      - 6PM-7PM
+      - 7PM-8PM
+      - 8PM-9PM
+      - 9PM-10PM
+      type: string
+      description: |-
+        * `9AM-10AM` - 9AM-10AM
+        * `10AM-11AM` - 10AM-11AM
+        * `11AM-12PM` - 11AM-12PM
+        * `12PM-1PM` - 12PM-1PM
+        * `1PM-2PM` - 1PM-2PM
+        * `2PM-3PM` - 2PM-3PM
+        * `3PM-4PM` - 3PM-4PM
+        * `4PM-5PM` - 4PM-5PM
+        * `5PM-6PM` - 5PM-6PM
+        * `6PM-7PM` - 6PM-7PM
+        * `7PM-8PM` - 7PM-8PM
+        * `8PM-9PM` - 8PM-9PM
+        * `9PM-10PM` - 9PM-10PM
+    TimeSlotsEnum:
+      enum:
+      - 9AM-10AM
+      - 10AM-11AM
+      - 11AM-12PM
+      - 12PM-1PM
+      - 1PM-2PM
+      - 2PM-3PM
+      - 3PM-4PM
+      - 4PM-5PM
+      - 5PM-6PM
+      - 6PM-7PM
+      - 7PM-8PM
+      - 8PM-9PM
+      - 9PM-10PM
+      type: string
+      description: |-
+        * `9AM-10AM` - 9AM-10AM
+        * `10AM-11AM` - 10AM-11AM
+        * `11AM-12PM` - 11AM-12PM
+        * `12PM-1PM` - 12PM-1PM
+        * `1PM-2PM` - 1PM-2PM
+        * `2PM-3PM` - 2PM-3PM
+        * `3PM-4PM` - 3PM-4PM
+        * `4PM-5PM` - 4PM-5PM
+        * `5PM-6PM` - 5PM-6PM
+        * `6PM-7PM` - 6PM-7PM
+        * `7PM-8PM` - 7PM-8PM
+        * `8PM-9PM` - 8PM-9PM
+        * `9PM-10PM` - 9PM-10PM
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
