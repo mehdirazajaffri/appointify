@@ -15,7 +15,7 @@ interface for patients to search for doctors, view their availability, and book 
   and time from the doctor's available time slots.
 - Appointment Management: Patients can view a list of their booked appointments. They can also reschedule.
 - Doctor Appointment Listings: Doctors can view a list of their upcoming appointments. This helps doctors stay organized
-  and manage their schedule effectively and they can update status of their appointment as well.
+  and manage their schedule effectively, and they can update status of their appointment as well.
 - Appointment Confirmation: Doctors can confirm or deny an appointment based on their availability and other factors.
   Patients receive notifications regarding the status of their appointments.
 
@@ -104,7 +104,7 @@ links here
 
 If you have any questions, suggestions, or issues, please contact the project maintainer:
 
-- Mehdi Raza Jaffri (mehdirazajaffri@gmail.com)
+- Mehdi Raza (mehdirazajaffri@gmail.com)
 
 ## Authors
 
