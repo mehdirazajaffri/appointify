@@ -15,6 +15,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from appointment.models import Doctor, Patient, Appointment
+from appointment.permissions import IsDoctor
 from appointment.serializers import DoctorSerializer, PatientSerializer, AppointmentSerializer
 
 
@@ -149,23 +150,17 @@ class DoctorViewSet(BaseReadOnlyModelViewSet):
         },
     )
     @action(detail=True, methods=['POST'], authentication_classes=(TokenAuthentication,),
-            permission_classes=(IsAuthenticated,))
+            permission_classes=(IsDoctor,))
     def update_appointment_status(self, request, pk=None):
         try:
-            if request.user.user_type != "doctor":
-                return Response({'error': 'Forbidden'}, status=401)
-
             doctor = self.get_object()
-
             appointment_id = request.data.get('appointment_id')
-            status = request.data.get('status')
-
+            appointment_status = request.data.get('status')
             try:
                 appointment = Appointment.objects.get(id=appointment_id, doctor=doctor)
             except Appointment.DoesNotExist:
                 return Response({'error': 'Appointment not found'}, status=404)
-
-            appointment.status = status
+            appointment.status = appointment_status
             appointment.save()
             appointment_serializer = AppointmentSerializer(appointment)
             return Response(appointment_serializer.data)
