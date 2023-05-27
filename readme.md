@@ -100,8 +100,8 @@ Note: With Docker, you can access the admin panel at http://localhost/admin/
 
 ## Deployed Version
 
-https://mehdijaffri.pythonanywhere.com/admin/
-https://mehdijaffri.pythonanywhere.com/schema/swagger-ui/
+- https://mehdijaffri.pythonanywhere.com/admin/
+- https://mehdijaffri.pythonanywhere.com/schema/swagger-ui/
 
 - Super Admin
     - Username: admin
