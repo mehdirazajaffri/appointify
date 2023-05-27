@@ -80,6 +80,7 @@ class Doctor(BaseModel):
     class Meta:
         verbose_name = 'Doctor'
         verbose_name_plural = 'Doctors'
+        ordering = ('-created_at',)
 
 
 class Appointment(BaseModel):

@@ -136,6 +136,8 @@ class DoctorViewSet(BaseReadOnlyModelViewSet):
                 'time_slot': time_slot,
                 'date': selected_date,
             })
+        # sort the list by time slot
+        available_appointments.sort(key=lambda x: x['time_slot'])
         return Response(available_appointments)
 
     @extend_schema(

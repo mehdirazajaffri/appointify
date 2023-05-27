@@ -59,7 +59,7 @@ class DoctorAdmin(admin.ModelAdmin):
 
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ('patient', 'doctor', 'status', 'date', 'time_slot')
+    list_display = ('patient', 'email', 'doctor', 'status', 'date', 'time_slot',)
     list_filter = ('doctor', 'status', 'date', 'time_slot',)
     search_fields = ('patient', 'doctor', 'status', 'date', 'time_slot')
     ordering = ('-date', '-time_slot')

@@ -24,7 +24,7 @@ class DoctorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doctor
-        fields = ('user', 'specialization', 'about', 'time_slots', 'image', 'degree', 'experience',)
+        fields = ('id', 'user', 'specialization', 'about', 'time_slots', 'image', 'degree', 'experience',)
 
 
 class PatientSerializer(serializers.ModelSerializer):
@@ -48,6 +48,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
         patient = validated_data.get('patient', None)
         doctor = validated_data['doctor']
         time_slot = validated_data['time_slot']
+        email = validated_data.get('email', None)
 
         if date < datetime.now().date():
             raise serializers.ValidationError('Date cannot be in the past')
@@ -60,6 +61,10 @@ class AppointmentSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError('This time slot is not available')
         else:
             raise serializers.ValidationError('This time slot is not available')
+
+        if not patient and email:
+            if Appointment.objects.filter(date=date, doctor=doctor, email=validated_data['email']).exists():
+                raise serializers.ValidationError('This email is already used for this doctor on this date')
 
         appointment = Appointment.objects.create(**validated_data)
         return appointment
