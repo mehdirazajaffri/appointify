@@ -117,7 +117,7 @@ Note: With Docker, you can access the admin panel at http://localhost/admin/
 - The frontend is built with React
 
 ``` bash
-    cd appintify-ui
+    cd appointify-ui
 ```
 
 - Install dependencies:
