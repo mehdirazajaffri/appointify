@@ -69,8 +69,15 @@ interface for patients to search for doctors, view their availability, and book 
     python manage.py runserver 0.0.0.0:8000
 ```
 
-
 Note: You can access the admin panel at http://localhost:8000/admin/
+
+## Run on Docker
+
+```bash
+    docker-compose up
+```
+
+Note: With Docker, you can access the admin panel at http://localhost/admin/
 
 ## API Documentation
 
@@ -88,10 +95,9 @@ Note: You can access the admin panel at http://localhost:8000/admin/
 
 ![Appointify](https://github.com/mehdirazajaffri/appointify/assets/10342757/1ca00001-3390-405c-9aa0-53506fe541e8)
 
-
 ## Deployed Version
 
-I'll also deploy this project on AWS EBS, and will be using the AWS RDS MYSQL Aurora and will update the published 
+I'll also deploy this project on AWS EBS, and will be using the AWS RDS MYSQL Aurora and will update the published
 links here
 
 ## Contact
