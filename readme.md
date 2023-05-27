@@ -82,8 +82,11 @@ Note: With Docker, you can access the admin panel at http://localhost/admin/
 ## API Documentation
 
 - API documentation is available at http://localhost:8000/schema/swagger-ui/
+  or https://mehdijaffri.pythonanywhere.com/schema/swagger-ui/
 - API documentation is available at http://localhost:8000/schema/redoc/
+  or https://mehdijaffri.pythonanywhere.com/schema/redoc/
 - You can also download the OpenAPI OAS3 at http://localhost:8000/schema/
+  or https://mehdijaffri.pythonanywhere.com/schema/
 
 ## Tech Stack
 
@@ -97,8 +100,17 @@ Note: With Docker, you can access the admin panel at http://localhost/admin/
 
 ## Deployed Version
 
-I'll also deploy this project on AWS EBS, and will be using the AWS RDS MYSQL Aurora and will update the published
-links here
+https://mehdijaffri.pythonanywhere.com/admin/
+https://mehdijaffri.pythonanywhere.com/schema/swagger-ui/
+
+- Super Admin
+    - Username: admin
+    - Password: Mehdi123
+- Patient
+    - Username: patient1
+    - Password: Mehdi123
+- Patient Token can be generated
+    - https://mehdijaffri.pythonanywhere.com/schema/swagger-ui/#/Auth%20Token/api_auth_token_create
 
 ## Frontend
 
@@ -137,6 +149,3 @@ If you have any questions, suggestions, or issues, please contact the project ma
 ## Authors
 
 mehdirazajaffri@gmail.com
-
-
-
