@@ -18,13 +18,6 @@ class AppointifyUser(AbstractUser):
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     email = models.EmailField(unique=True)
 
-    def save(self, *args, **kwargs):
-        if self.user_type == 'doctor':
-            self.is_staff = True
-        if self.password:
-            self.set_password(self.password)
-        super(AppointifyUser, self).save(*args, **kwargs)
-
     def __str__(self):
         return self.first_name or self.username
 
