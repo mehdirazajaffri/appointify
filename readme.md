@@ -100,6 +100,34 @@ Note: With Docker, you can access the admin panel at http://localhost/admin/
 I'll also deploy this project on AWS EBS, and will be using the AWS RDS MYSQL Aurora and will update the published
 links here
 
+## Frontend
+
+- The frontend is built with React
+
+``` bash
+    cd appintify-ui
+```
+
+- Install dependencies:
+
+```bash
+    npm install
+```
+
+- Run the server:
+
+```bash
+    npm start
+```
+
+- Build the project:
+
+```bash
+    npm run build
+```
+
+- Frontend is available at http://localhost:3000/
+
 ## Contact
 
 If you have any questions, suggestions, or issues, please contact the project maintainer:
