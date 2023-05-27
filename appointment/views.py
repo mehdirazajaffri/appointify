@@ -190,8 +190,8 @@ class PatientViewSet(BaseReadOnlyModelViewSet):
     )
     @action(detail=False, methods=['get'])
     def appointments(self, request, pk=None):
-        patient = self.get_object()
-        appointments = patient.appointment_set.all()
+        patient = self.request.user.patient
+        appointments = patient.appointments.all()
         serializer = AppointmentSerializer(appointments, many=True)
         return Response(serializer.data)
 
