@@ -69,9 +69,8 @@ interface for patients to search for doctors, view their availability, and book 
     python manage.py runserver 0.0.0.0:8000
 ```
 
-```
-    Note: You can access the admin panel at http://localhost:8000/admin
-```
+
+Note: You can access the admin panel at http://localhost:8000/admin/
 
 ## API Documentation
 
