@@ -117,8 +117,7 @@ class Appointment(BaseModel):
             raise ValidationError('This time slot is not available')
 
     def __str__(self):
-        return self.patient.user.first_name + ' ' + self.patient.user.last_name + ' - ' + self.time_slot.slot + ' - ' + str(
-            self.date)
+        return self.doctor.user.get_full_name() + ' - ' + self.time_slot.slot + ' - ' + str(self.date)
 
     class Meta:
         verbose_name = 'Appointment'
