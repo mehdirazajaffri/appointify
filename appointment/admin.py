@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 
 from appointment.models import Patient, Doctor, Appointment, AppointifyUser, TimeSlot
@@ -42,7 +43,18 @@ class DoctorAdmin(admin.ModelAdmin):
     list_display = ('user', 'specialization', 'about', 'experience', 'degree')
     list_filter = ('specialization', 'experience', 'degree')
     search_fields = ('user', 'user__email', 'user__phone_number', 'user__address', 'user__city')
-    autocomplete_fields = ["user"]
+
+    def get_form(self, request, obj=None, **kwargs):
+        # Define a custom form for the DoctorAdmin
+        class DoctorForm(forms.ModelForm):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                # Filter the queryset of the 'user' field to show only users with user_type='doctor'
+                self.fields['user'].queryset = AppointifyUser.objects.filter(user_type='doctor')
+
+        # Set the form attribute of the DoctorAdmin to the custom DoctorForm
+        self.form = DoctorForm
+        return super().get_form(request, obj, **kwargs)
 
 
 @admin.register(Appointment)

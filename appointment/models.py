@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -19,7 +21,7 @@ class AppointifyUser(AbstractUser):
     email = models.EmailField(unique=True)
 
     def __str__(self):
-        return self.first_name or self.username
+        return self.get_full_name() or self.username
 
 
 class Patient(BaseModel):
@@ -34,7 +36,7 @@ class Patient(BaseModel):
     )
 
     def __str__(self):
-        return self.user.first_name or self.user.username
+        return self.user.get_full_name() or self.user.username
 
     class Meta:
         verbose_name = 'Patient'
@@ -98,7 +100,7 @@ class Appointment(BaseModel):
     message = models.TextField(null=True, blank=True)
 
     def clean(self):
-        if self.date < self.created_at.date():
+        if self.date < datetime.now().date():
             raise ValidationError('Date cannot be in the past')
         if self.patient.appointments.filter(date=self.date, doctor=self.doctor).exists():
             raise ValidationError('You already have an appointment with this doctor on this date')
