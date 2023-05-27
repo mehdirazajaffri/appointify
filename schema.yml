@@ -256,6 +256,11 @@ paths:
   /api/patients/book_appointment/:
     post:
       operationId: api_patients_book_appointment_create
+      description: Book an appointment with a doctor. Don't forget to send doctor_id,
+        patient_id, date and time_slotValidate if the appointment date is in the future.checks
+        if the patient already has an appointment with the same doctor on the same
+        date.checks if the selected time slot is available for the doctorif the email
+        is already used for an appointment with the same doctor on the same date.
       summary: Book Appointment
       tags:
       - Patient
@@ -416,6 +421,9 @@ components:
     Doctor:
       type: object
       properties:
+        id:
+          type: integer
+          readOnly: true
         user:
           allOf:
           - $ref: '#/components/schemas/AppointifyUser'
@@ -440,6 +448,7 @@ components:
           type: integer
       required:
       - degree
+      - id
       - specialization
       - user
     GenderEnum:

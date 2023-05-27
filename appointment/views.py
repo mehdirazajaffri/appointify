@@ -206,6 +206,12 @@ class PatientViewSet(BaseReadOnlyModelViewSet):
             201: AppointmentSerializer,
             400: "Bad Request",
         },
+        description="Book an appointment with a doctor. Don't forget to send doctor_id, patient_id, "
+                    "date and time_slot"
+                    "Validate if the appointment date is in the future."
+                    "checks if the patient already has an appointment with the same doctor on the same date."
+                    "checks if the selected time slot is available for the doctor"
+                    "if the email is already used for an appointment with the same doctor on the same date.",
     )
     @action(detail=False, methods=['post'], permission_classes=[], authentication_classes=[])
     def book_appointment(self, request, pk=None):
