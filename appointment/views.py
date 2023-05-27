@@ -16,7 +16,8 @@ from rest_framework.views import APIView
 
 from appointment.models import Doctor, Patient, Appointment
 from appointment.permissions import IsDoctor
-from appointment.serializers import DoctorSerializer, PatientSerializer, AppointmentSerializer
+from appointment.serializers import DoctorSerializer, PatientSerializer, AppointmentSerializer, \
+    AppointmentDetailSerializer
 
 
 class AuthTokenView(APIView):
@@ -185,14 +186,14 @@ class PatientViewSet(BaseReadOnlyModelViewSet):
     @extend_schema(
         summary="Get Appointments",
         responses={
-            200: AppointmentSerializer(many=True),
+            200: AppointmentDetailSerializer(many=True),
         }
     )
     @action(detail=False, methods=['get'])
     def appointments(self, request, pk=None):
         patient = self.request.user.patient
         appointments = patient.appointments.all()
-        serializer = AppointmentSerializer(appointments, many=True)
+        serializer = AppointmentDetailSerializer(appointments, many=True)
         return Response(serializer.data)
 
     @extend_schema(

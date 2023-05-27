@@ -251,7 +251,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedAppointmentList'
+                $ref: '#/components/schemas/PaginatedAppointmentDetailList'
           description: ''
   /api/patients/book_appointment/:
     post:
@@ -402,6 +402,53 @@ components:
       - id
       - time_slot
       - updated_at
+    AppointmentDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        doctor:
+          allOf:
+          - $ref: '#/components/schemas/Doctor'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        date:
+          type: string
+          format: date
+        email:
+          type: string
+          format: email
+          nullable: true
+          maxLength: 255
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 20
+        message:
+          type: string
+          nullable: true
+        patient:
+          type: integer
+          nullable: true
+        time_slot:
+          $ref: '#/components/schemas/TimeSlotEnum'
+      required:
+      - created_at
+      - date
+      - doctor
+      - id
+      - time_slot
+      - updated_at
     AuthToken:
       type: object
       properties:
@@ -461,7 +508,7 @@ components:
         * `male` - Male
         * `female` - Female
         * `other` - Other
-    PaginatedAppointmentList:
+    PaginatedAppointmentDetailList:
       type: object
       properties:
         count:
@@ -480,7 +527,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Appointment'
+            $ref: '#/components/schemas/AppointmentDetail'
     PaginatedDoctorList:
       type: object
       properties:

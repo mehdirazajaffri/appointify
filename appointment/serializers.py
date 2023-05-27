@@ -41,6 +41,14 @@ class PatientSerializer(serializers.ModelSerializer):
         fields = ('user', 'gender')
 
 
+class AppointmentDetailSerializer(serializers.ModelSerializer):
+    doctor = DoctorSerializer(read_only=True)
+
+    class Meta:
+        model = Appointment
+        fields = "__all__"
+
+
 class AppointmentSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
