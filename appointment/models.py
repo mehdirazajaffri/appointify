@@ -64,6 +64,11 @@ class TimeSlot(BaseModel):
     def __str__(self):
         return self.slot
 
+    class Meta:
+        verbose_name = 'Time Slot'
+        verbose_name_plural = 'Time Slots'
+        ordering = ('slot',)
+
 
 class Doctor(BaseModel):
     user = models.OneToOneField(AppointifyUser, on_delete=models.CASCADE)
