@@ -229,7 +229,7 @@ class PatientViewSet(BaseReadOnlyModelViewSet):
     @action(detail=False, methods=['post'], permission_classes=[], authentication_classes=[])
     def register_patient(self, request):
         serializer = PatientSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors)

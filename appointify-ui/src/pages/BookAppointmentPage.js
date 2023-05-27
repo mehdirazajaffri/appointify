@@ -5,7 +5,7 @@ import "../css/BookAppointmentPage.css"
 
 const BookAppointmentPage = () => {
   const { doctorId } = useParams();
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [timeSlots, setTimeSlots] = useState([]);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
   const [email, setEmail] = useState('');
@@ -30,18 +30,24 @@ const BookAppointmentPage = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
+  
     const requestBody = {
+      status: "pending",
       date,
-      email,
-      phone_number: phoneNumber,
       message,
       doctor: doctorId,
       time_slot: selectedTimeSlot,
     };
-
-    const isPatient = localStorage.getItem('token');
-
+  
+    if (email) requestBody.email = email;
+    if (phoneNumber) requestBody.phone_number = phoneNumber;
+  
+    const storedUser = localStorage.getItem('user');
+    const patientId = storedUser ? JSON.parse(storedUser).patient_id : null;
+    if (patientId) requestBody.patient = patientId;
+  
+    const patientToken = localStorage.getItem('token');
+  
     try {
       const response = await axios.post(
         'https://mehdijaffri.pythonanywhere.com/api/patients/book_appointment/',
@@ -49,16 +55,25 @@ const BookAppointmentPage = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            ...(isPatient && { Authorization: `Token ${isPatient}` }),
+            ...(patientToken && { Authorization: `Token ${patientToken}` }),
           },
         }
       );
-
+  
       console.log('Appointment booked successfully:', response.data);
+  
+      // Reset the form fields
+      setDate(new Date().toISOString().split('T')[0]);
+      setSelectedTimeSlot('');
+      setEmail('');
+      setPhoneNumber('');
+      setMessage('');
     } catch (error) {
       console.error('Error booking appointment:', error);
     }
   };
+  
+  
 
   return (
     <div>
@@ -81,11 +96,11 @@ const BookAppointmentPage = () => {
         </div>
         <div>
           <label>Email:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div>
           <label>Phone Number:</label>
-          <input type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
+          <input type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
         </div>
         <div>
           <label>Message:</label>

@@ -11,18 +11,18 @@ const SignInPage = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await axios.post('/auth-token/', {
         username,
         password
       });
-
+  
       const { token } = response.data;
-      console.log(response.data);
-      // Save the token in localStorage
       localStorage.setItem('token', token);
-
+  
+      localStorage.setItem('user', JSON.stringify(response.data));
+  
       // Redirect to another page (e.g., DoctorListingPage)
       history.push('/');
     } catch (error) {
@@ -30,6 +30,7 @@ const SignInPage = () => {
       console.error('Error signing in:', error);
     }
   };
+  
 
   return (
     <div className="signin-container">

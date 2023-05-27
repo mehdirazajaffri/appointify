@@ -1,0 +1,55 @@
+.PatientRegistrationPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .PatientRegistrationPage h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .PatientRegistrationPage form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  }
+  
+  .PatientRegistrationPage form div {
+    margin-bottom: 15px;
+  }
+  
+  .PatientRegistrationPage form label {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .PatientRegistrationPage form input,
+  .PatientRegistrationPage form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .PatientRegistrationPage form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .PatientRegistrationPage form button:hover {
+    background-color: #45a049;
+  }
+  
