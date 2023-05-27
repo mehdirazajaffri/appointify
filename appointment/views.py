@@ -62,6 +62,7 @@ class AuthTokenView(APIView):
         return Response({
             'token': token.key,
             'user_id': user.pk,
+            'patient_id': user.patient.pk if hasattr(user, 'patient') else None,
             'created': token.created,
             'email': user.email,
             'first_name': user.first_name,

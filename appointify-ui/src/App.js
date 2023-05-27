@@ -1,40 +1,43 @@
-import * as React from "react";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
-import ProTip from "./ProTip";
-import DoctorsPage from "./pages/DoctorPage";
-import Navbar from "./Navbar";
-import { Routes, Route } from "react-router-dom";
-import BookAppointmentPage from "./pages/BookAppointmentPage";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
+import { Global, css } from '@emotion/react';
+import axios from 'axios';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import DoctorListingPage from './pages/DoctorListingPage';
+import SignInPage from './pages/SignInPage';
+import AvailableSlotsPage from './pages/AvailableSlotsPage';
+import BookAppointmentPage from './pages/BookAppointmentPage';
 
-export default function App() {
+// Define a custom theme
+const theme = createTheme();
+
+// Global CSS styles
+const globalStyles = css`
+  body {
+    margin: 0;
+    padding: 0;
+  }
+`;
+
+const App = () => {
+  // Set base URL for API requests
+  axios.defaults.baseURL = 'https://mehdijaffri.pythonanywhere.com/api/';
+
   return (
-    <Container>
-      <Box>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Appointify - Your Doctor at your FingerTip
-        </Typography>
-        <DoctorsPage />
-        <Routes>
-          <Route path="/book-appointment/:doctorId" element={<BookAppointmentPage />} />
-        </Routes>
-        
-      </Box>
-    </Container>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Global styles={globalStyles} />
+      <Router>
+        <Switch>
+          <Route path="/" exact component={DoctorListingPage} />
+          <Route path="/signin" component={SignInPage} />
+          <Route path="/doctors/:id/slots" component={AvailableSlotsPage} />
+          <Route path="/book-appointment/:doctorId" component={BookAppointmentPage} />
+        </Switch>
+      </Router>
+    </ThemeProvider>
   );
-}
+};
+
+export default App;

@@ -1,0 +1,53 @@
+.doctor-listing-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+  }
+  
+  .doctor-card {
+    display: flex;
+    align-items: center;
+    width: 600px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .doctor-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+  
+  .doctor-details {
+    flex: 1;
+  }
+  
+  .doctor-details h2 {
+    margin-bottom: 10px;
+  }
+  
+  .doctor-details p {
+    margin-bottom: 5px;
+  }
+  
+  .book-appointment-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .book-appointment-button:hover {
+    background-color: #0056b3;
+  }
