@@ -289,6 +289,7 @@ paths:
   /api/patients/register_patient/:
     post:
       operationId: api_patients_register_patient_create
+      description: Register a new patient. Don't forget to send Password
       summary: Register Patient
       tags:
       - Patient
@@ -344,8 +345,12 @@ components:
         last_name:
           type: string
           maxLength: 150
+        password:
+          type: string
+          writeOnly: true
       required:
       - email
+      - password
       - username
     Appointment:
       type: object

@@ -6,10 +6,17 @@ from appointment.models import Doctor, AppointifyUser, Patient, Appointment
 
 
 class AppointifyUserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    def create(self, validated_data):
+        user = AppointifyUser.objects.create_user(**validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+
     class Meta:
         model = AppointifyUser
-        fields = ('username', 'email', 'phone_number', 'first_name', 'last_name',)
-        write_only_fields = ('password',)
+        fields = ('username', 'email', 'phone_number', 'first_name', 'last_name', 'password',)
 
 
 class DoctorSerializer(serializers.ModelSerializer):

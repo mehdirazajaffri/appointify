@@ -149,20 +149,26 @@ class DoctorViewSet(BaseReadOnlyModelViewSet):
     @action(detail=True, methods=['POST'], authentication_classes=(TokenAuthentication,),
             permission_classes=(IsAuthenticated,))
     def update_appointment_status(self, request, pk=None):
-        doctor = self.get_object()
-
-        appointment_id = request.data.get('appointment_id')
-        status = request.data.get('status')
-
         try:
-            appointment = Appointment.objects.get(id=appointment_id, doctor=doctor)
-        except Appointment.DoesNotExist:
-            return Response({'error': 'Appointment not found'}, status=404)
+            if request.user.user_type != "doctor":
+                return Response({'error': 'Forbidden'}, status=401)
 
-        appointment.status = status
-        appointment.save()
-        appointment_serializer = AppointmentSerializer(appointment)
-        return Response(appointment_serializer.data)
+            doctor = self.get_object()
+
+            appointment_id = request.data.get('appointment_id')
+            status = request.data.get('status')
+
+            try:
+                appointment = Appointment.objects.get(id=appointment_id, doctor=doctor)
+            except Appointment.DoesNotExist:
+                return Response({'error': 'Appointment not found'}, status=404)
+
+            appointment.status = status
+            appointment.save()
+            appointment_serializer = AppointmentSerializer(appointment)
+            return Response(appointment_serializer.data)
+        except Exception:
+            return Response({'error': 'Forbidden'}, status=401)
 
 
 @extend_schema(
@@ -208,6 +214,7 @@ class PatientViewSet(BaseReadOnlyModelViewSet):
 
     @extend_schema(
         summary="Register Patient",
+        description="Register a new patient. Don't forget to send Password",
         request=PatientSerializer,
         responses={
             201: PatientSerializer,
