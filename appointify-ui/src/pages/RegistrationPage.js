@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
 import axios from 'axios';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import '../css/RegistrationPage.css';
 
 
@@ -11,6 +12,9 @@ const PatientRegistrationPage = () => {
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState('');
+  const [error, setError] = useState('');
+
+  const history = useHistory();
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +33,7 @@ const PatientRegistrationPage = () => {
 
     try {
       const response = await axios.post(
-        'https://mehdijaffri.pythonanywhere.com/api/patients/register_patient/',
+        '/patients/register_patient/',
         requestBody
       );
 
@@ -43,7 +47,21 @@ const PatientRegistrationPage = () => {
       setLastName('');
       setPassword('');
       setGender('');
+
+      history.push('/');
     } catch (error) {
+      console.log('Registration unsuccessful:', error.response.data);
+      if (error.response && error.response.data && error.response.data.user) {
+        // read all the keys of the user object into an array
+        const userObjectKeys = Object.keys(error.response.data.user);
+        // concatenate all the error messages from the array into a string
+        const errorMessage = userObjectKeys.map((key) => {
+          return `${key}: ${error.response.data.user[key]}`;
+        }).join(' ');
+        setError(errorMessage);
+      } else {
+        setError('Something went wrong. Please try again.');
+      }
       console.error('Error registering patient:', error);
     }
   };
@@ -51,6 +69,7 @@ const PatientRegistrationPage = () => {
   return (
     <div>
       <h1>Patient Registration</h1>
+      {error && <div className="error">{error}</div>}
       <form onSubmit={handleFormSubmit}>
         <div>
           <label>Username:</label>

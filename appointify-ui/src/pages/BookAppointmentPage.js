@@ -32,7 +32,7 @@ const BookAppointmentPage = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-  
+
     const requestBody = {
       status: "pending",
       date,
@@ -40,19 +40,19 @@ const BookAppointmentPage = () => {
       doctor: doctorId,
       time_slot: selectedTimeSlot,
     };
-  
+
     if (email) requestBody.email = email;
     if (phoneNumber) requestBody.phone_number = phoneNumber;
-  
+
     const storedUser = localStorage.getItem('user');
     const patientId = storedUser ? JSON.parse(storedUser).patient_id : null;
     if (patientId) requestBody.patient = patientId;
-  
+
     const patientToken = localStorage.getItem('token');
-  
+
     try {
       const response = await axios.post(
-        'https://mehdijaffri.pythonanywhere.com/api/patients/book_appointment/',
+        '/patients/book_appointment/',
         requestBody,
         {
           headers: {
@@ -61,9 +61,9 @@ const BookAppointmentPage = () => {
           },
         }
       );
-  
+
       console.log('Appointment booked successfully:', response.data);
-  
+
       // Reset the form fields
       setDate(new Date().toISOString().split('T')[0]);
       setSelectedTimeSlot('');
@@ -75,8 +75,8 @@ const BookAppointmentPage = () => {
       console.error('Error booking appointment:', error);
     }
   };
-  
-  
+
+
 
   return (
     <div>

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import '../css/SignInPage.css';
 
-const SignInPage = () => {
+const SignInPage = ({ setUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -11,26 +11,24 @@ const SignInPage = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await axios.post('/auth-token/', {
         username,
         password
       });
-  
+
       const { token } = response.data;
       localStorage.setItem('token', token);
-  
       localStorage.setItem('user', JSON.stringify(response.data));
-  
-      // Redirect to another page (e.g., DoctorListingPage)
+      setUser(response.data);
       history.push('/');
     } catch (error) {
       setError('Invalid credentials. Please try again.');
       console.error('Error signing in:', error);
     }
   };
-  
+
 
   return (
     <div className="signin-container">

@@ -2,30 +2,29 @@ nav {
     background-color: #f1f1f1;
     padding: 10px;
   }
-  
+
   ul {
     list-style: none;
     display: flex;
-    justify-content: space-between;
+    direction: left;
     align-items: center;
     margin: 0;
     padding: 0;
   }
-  
+
   li {
     margin-right: 10px;
   }
-  
+
   li:last-child {
     margin-right: 0;
   }
-  
+
   a {
     color: #333;
     text-decoration: none;
   }
-  
+
   a:hover {
     text-decoration: underline;
   }
-  

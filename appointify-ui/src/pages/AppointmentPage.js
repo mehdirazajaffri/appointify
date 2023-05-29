@@ -16,7 +16,7 @@ const AppointmentsPage = () => {
       }
 
       try {
-        const response = await axios.get('https://mehdijaffri.pythonanywhere.com/api/patients/appointments/', {
+        const response = await axios.get('/patients/appointments/', {
           headers: {
             Authorization: `Token ${token}`,
           },
