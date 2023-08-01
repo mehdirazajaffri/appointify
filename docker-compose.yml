@@ -12,3 +12,8 @@ services:
       - .:/code
     ports:
       - "80:8000"
+  react:
+    build: ./appointify-ui
+    command: bash -c "npm install && npm start"
+    ports:
+      - "3000:3000"
